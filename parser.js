@@ -2,6 +2,8 @@ const fs = require('fs');
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 
+let id = 0;
+
 function parseFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
 
@@ -17,8 +19,11 @@ function parseFile(filePath) {
     }
   });
 
+  const moduleId = id++;
+
   return {
-    file: filePath,
+    id: moduleId,
+    filePath,
     dependencies
   };
 }
