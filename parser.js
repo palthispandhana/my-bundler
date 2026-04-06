@@ -1,6 +1,7 @@
 const fs = require('fs');
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
+const babel = require('@babel/core');
 
 let id = 0;
 
@@ -19,12 +20,18 @@ function parseFile(filePath) {
     }
   });
 
+  // 🔥 Transform code using Babel
+  const { code } = babel.transformFromAstSync(ast, content, {
+    presets: ['@babel/preset-env']
+  });
+
   const moduleId = id++;
 
   return {
     id: moduleId,
     filePath,
-    dependencies
+    dependencies,
+    code   // 👈 important
   };
 }
 
