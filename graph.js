@@ -5,6 +5,7 @@ function createGraph(entry) {
   const mainModule = parseFile(entry);
 
   const queue = [mainModule];
+  const visited = new Set();
 
   for (const module of queue) {
     module.mapping = {};
@@ -15,11 +16,13 @@ function createGraph(entry) {
         relativePath
       );
 
-      const child = parseFile(absolutePath);
+      if (!visited.has(absolutePath)) {
+        const child = parseFile(absolutePath);
+        visited.add(absolutePath);
 
-      module.mapping[relativePath] = child.id;
-
-      queue.push(child);
+        module.mapping[relativePath] = child.id;
+        queue.push(child);
+      }
     });
   }
 
