@@ -2,9 +2,18 @@
 <html>
   <body>
 
-    <h1>TEST PAGE</h1>
+    <h1>Spandhana</h1>
 
     <script src="./dist/bundle.js"></script>
+    <script>
+  const socket = new WebSocket('ws://localhost:3000');
+
+  socket.onmessage = (event) => {
+    if (event.data === 'reload') {
+      location.reload();
+    }
+  };
+</script>
 
   </body>
 </html>
