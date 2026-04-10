@@ -1,44 +1,43 @@
+const fs = require('fs');
+const createGraph = require('./graph');
 
-    (function(modules) {
-      function require(id) {
+function bundle(entry) {
+  const graph = createGraph(entry);
+
+  let modules = '';
+
+  graph.forEach(mod => {
+    modules += `${mod.id}:[function(require,module,exports){${mod.code}},${JSON.stringify(mod.mapping)}],`;
+  });
+
+  const result = `
+    (function(modules){
+      function require(id){
         const [fn, mapping] = modules[id];
 
-        function localRequire(name) {
+        function localRequire(name){
           return require(mapping[name]);
         }
 
         const module = { exports: {} };
-
         fn(localRequire, module, module.exports);
-
         return module.exports;
       }
 
       require(0);
-    })({
-      0: [
-        function(require, module, exports) {
-          "use strict";
+    })({${modules}})
+  `;
 
-var _utils = require("./utils.js");
-console.log((0, _utils.add)(2, 3));
-        },
-        {"./utils.js":1}
-      ],
-    
-      1: [
-        function(require, module, exports) {
-          "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.add = add;
-function add(a, b) {
-  return a + b;
+  return result;
 }
-        },
-        {}
-      ],
-    })
-  
+
+const result = bundle('./src/index.js');
+
+// create dist if not exists
+if (!fs.existsSync('./dist')) {
+  fs.mkdirSync('./dist');
+}
+
+fs.writeFileSync('./dist/bundle.js', result);
+
+console.log("✅ Bundle created successfully!");

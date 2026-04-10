@@ -1,6 +1,18 @@
 {
+  "name": "my-bundler",
+  "version": "1.0.0",
+  "main": "bundle.js",
+  "scripts": {
+    "build": "node bundle.js",
+    "start": "node server.js"
+  },
   "dependencies": {
-    "@babel/core": "^7.29.0",
-    "@babel/preset-env": "^7.29.2"
+    "@babel/core": "^7.29.2",
+    "@babel/parser": "^7.29.2",
+    "@babel/traverse": "^7.29.2",
+    "@babel/preset-env": "^7.29.2",
+    "express": "^4.18.2",
+    "ws": "^8.0.0",
+    "terser": "^5.0.0"
   }
 }
