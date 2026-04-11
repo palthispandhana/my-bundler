@@ -1,1 +1,2 @@
-require('./src/bundle.js');
+const fs = require('fs');
+const createGraph = require('./graph');

@@ -1,3 +1,4 @@
+console.log("bundle running");
 const fs = require('fs');
 const createGraph = require('./graph');
 
